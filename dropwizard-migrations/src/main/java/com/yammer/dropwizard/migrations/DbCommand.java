@@ -13,8 +13,13 @@ public class DbCommand<T extends Configuration> extends AbstractLiquibaseCommand
     private static final String COMMAND_NAME_ATTR = "subcommand";
     private final SortedMap<String, AbstractLiquibaseCommand<T>> subcommands;
 
-    public DbCommand(ConfigurationStrategy<T> strategy, Class<T> configurationClass) {
-        super("db", "Run database migration tasks", strategy, configurationClass);
+    public DbCommand(ConfigurationStrategy<T> strategy, Class<T> configurationClass, String commandSuffix, String title) {
+        super(
+                commandSuffix == null ? "db" : "db_" + commandSuffix,
+                title == null ? "Run database migration tasks" : String.format("Run database migration tasks on '%s'", title),
+                strategy,
+                configurationClass
+        );
         this.subcommands = Maps.newTreeMap();
         addSubcommand(new DbCalculateChecksumCommand<T>(strategy, configurationClass));
         addSubcommand(new DbClearChecksumsCommand<T>(strategy, configurationClass));
