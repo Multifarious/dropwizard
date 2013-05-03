@@ -12,6 +12,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
 public abstract class AbstractLiquibaseCommand<T extends Configuration> extends ConfiguredCommand<T> {
     private final ConfigurationStrategy<T> strategy;
     private final Class<T> configurationClass;
+    private String schemaResourcePath;
 
     protected AbstractLiquibaseCommand(String name,
                                        String description,
@@ -33,7 +34,7 @@ public abstract class AbstractLiquibaseCommand<T extends Configuration> extends 
         final DatabaseConfiguration dbConfig = strategy.getDatabaseConfiguration(configuration);
         dbConfig.setMaxSize(1);
         dbConfig.setMinSize(1);
-
+        schemaResourcePath = dbConfig.getSchemaResourcePath();
         ManagedLiquibase managedLiquibase = null;
         try {
             managedLiquibase = new ManagedLiquibase(dbConfig);
@@ -46,6 +47,10 @@ public abstract class AbstractLiquibaseCommand<T extends Configuration> extends 
                 managedLiquibase.stop();
             }
         }
+    }
+
+    public String getSchemaResourcePath() {
+        return schemaResourcePath;
     }
 
     protected abstract void run(Namespace namespace, Liquibase liquibase) throws Exception;

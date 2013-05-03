@@ -27,7 +27,7 @@ public class DbCalculateChecksumCommand<T extends Configuration> extends Abstrac
     @Override
     public void run(Namespace namespace,
                     Liquibase liquibase) throws Exception {
-        final CheckSum checkSum = liquibase.calculateCheckSum("migrations.xml",
+        final CheckSum checkSum = liquibase.calculateCheckSum(getSchemaResourcePath(),
                                                               namespace.<String>getList("id").get(0),
                                                               namespace.<String>getList("author").get(0));
         LOGGER.info("checksum = {}", checkSum);

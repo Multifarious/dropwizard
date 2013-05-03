@@ -11,19 +11,25 @@ public abstract class MigrationsBundle<T extends Configuration> implements Bundl
     private final String commandSuffix;
     private final String databaseTitle;
 
+    /**
+     * Constructs a named database migration to be accessed via <tt>db</tt>.
+     */
     public <T> MigrationsBundle() {
         this(null,null);
     }
 
+    /**
+     * Constructs a named database migration to be accessed via <tt>db_<em>&lt;commandSuffix&gt;</em></tt>.
+     * @param commandSuffix Defines command used to run this MigrationsBundle
+     */
     public <T> MigrationsBundle(String commandSuffix) {
         this(commandSuffix,null);
     }
 
     /**
-     * Constructs a named database migration to be accessed via <em>db_&lt;commandSuffix&gt;</em>
+     * Constructs a named database migration to be accessed via <tt>db_<em>&lt;commandSuffix&gt;</em></tt>.
      * @param commandSuffix Defines command used to run this MigrationsBundle
      * @param databaseTitle Human-readable Database title displayed in command help. Defaults to commandSuffix.
-     * @param <T>
      */
     public <T> MigrationsBundle(String commandSuffix, String databaseTitle) {
         this.commandSuffix = commandSuffix == null || commandSuffix.isEmpty() ? null : commandSuffix;
